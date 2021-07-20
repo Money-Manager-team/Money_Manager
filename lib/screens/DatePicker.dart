@@ -6,6 +6,8 @@ class DatePickerClass extends StatefulWidget {
 }
 
 class _DatePickerClassState extends State<DatePickerClass> {
+
+  //DateTimes
   DateTime selectedDate = DateTime.now();
 
   _selectDate(BuildContext context) async {
@@ -16,11 +18,12 @@ class _DatePickerClassState extends State<DatePickerClass> {
       lastDate: DateTime(2025),
     );
     if (picked != null && picked != selectedDate)
+    {
       setState(() {
         selectedDate = picked;
       });
+    }
   }
-
 
   @override
   Widget build(BuildContext context) {

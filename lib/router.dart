@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_manager/main.dart';
 import 'package:money_manager/screens/Add_Custom_Category.dart';
 import 'package:money_manager/screens/Add_Expense.dart';
 import 'package:money_manager/screens/budget.dart';
@@ -13,11 +14,14 @@ import 'constants.dart';
 
 Route<dynamic> createRoute(settings) {
   switch (settings.name) {
-
+    case splashScreen1: 
+      return MaterialPageRoute
+      (
+        builder: (context) => splashScreen(),
+      );
     case homeRoute:return MaterialPageRoute(
         builder: (context) => MainScreen(),
       );
-
     case premiumLoginRoute:
       return MaterialPageRoute(
         builder: (context) => PremiumUserLogin(),

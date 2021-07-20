@@ -1,11 +1,35 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:money_manager/screens/premiumUserLogin.dart';
 import '../constants.dart';
 
-class RegisteredMenu extends StatelessWidget {
+class RegisteredMenu extends StatefulWidget {
   
 
   @override
+  _RegisteredMenuState createState() => _RegisteredMenuState();
+}
+
+class _RegisteredMenuState extends State<RegisteredMenu> {
+
+  //Strings
+  String username = "";
+  String email = FirebaseAuth.instance.currentUser.email;
+  String user = FirebaseAuth.instance.currentUser.uid;
+
+  //voids
+  void get_data() async
+  {
+    DocumentSnapshot get_username = await FirebaseFirestore.instance.collection("USERs").doc(user).get();
+    setState(() {
+      username = get_username["Name"];
+    });
+  }
+  
+  @override
   Widget build(BuildContext context) {
+    get_data();
     return Drawer(
         child: Card(
           child: ListView(
@@ -24,9 +48,12 @@ class RegisteredMenu extends StatelessWidget {
                         height: 30,
                         child: ListTile(
                           leading: Icon(Icons.person_pin_outlined),
-                          title: Align(
-                            child: new Text("  Jamee Shahriyar"),
-                            alignment: Alignment(-1.5, 0),
+                          title: Row
+                          (
+                            children: 
+                            [
+                              Text(username),
+                            ],
                           ),
                         ),
                       ),
@@ -34,19 +61,12 @@ class RegisteredMenu extends StatelessWidget {
                         height: 30,
                         child: ListTile(
                           leading: Icon(Icons.email_outlined),
-                          title: Align(
-                            child: new Text("  shahriyar@gmail.com"),
-                            alignment: Alignment(-1.95, 0),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30,
-                        child: ListTile(
-                          leading: Icon(Icons.pageview_rounded),
-                          title: Align(
-                            child: new Text("       ID:04"),
-                            alignment: Alignment(-1.5, 0),
+                          title: Row
+                          (
+                            children: 
+                            [
+                              Expanded(child: Text(email)),
+                            ],
                           ),
                         ),
                       ),
@@ -82,9 +102,9 @@ class RegisteredMenu extends StatelessWidget {
                   child: Text('Sign Out'),
                  
                   onPressed: () async {
-                          Navigator.popUntil(context, (route) => route.isFirst);
-                          // Navigator.popUntil(context, ModalRoute.withName(premiumLoginRoute));
-                        },
+                    await FirebaseAuth.instance.signOut();
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> PremiumUserLogin()));
+                  },
                 ),
               )
             ],

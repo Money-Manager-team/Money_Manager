@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:money_manager/Widgets/guest_menu_widget.dart';
 
@@ -45,12 +47,41 @@ class _GuestUserDashState extends State<GuestUserDash> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    buildCardDashboard("300 RM" , "Budget Limit", 330, 150 ,Colors.indigo, Colors.red, Colors.indigo),
-                    buildCardDashboard("80 RM", "Current Total Expense", 330, 150 ,Colors.indigo,   Colors.indigo, Colors.red[400]),
+                    StreamBuilder(
+                      stream: FirebaseFirestore.instance.collection("USERs").doc(FirebaseAuth.instance.currentUser.uid).snapshots(),
+                      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if(!snapshot.hasData)
+                        {
+                          return CircularProgressIndicator();
+                        }
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting:
+                          return CircularProgressIndicator();
+                            break;
+                          default:
+                          return buildCardDashboard("${snapshot.data["Expenditure"]} RM" , "Current Total Expense", 330, 150 ,Colors.indigo, Colors.red, Colors.indigo);
+                        }
+                      }
+                    ),
+                    StreamBuilder(
+                      stream: FirebaseFirestore.instance.collection("USERs").doc(FirebaseAuth.instance.currentUser.uid).snapshots(),
+                      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if(!snapshot.hasData)
+                        {
+                          return CircularProgressIndicator();
+                        }
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting:
+                          return CircularProgressIndicator();
+                            break;
+                          default:
+                          return buildCardDashboard("${snapshot.data["Budget"]} RM" , "Budget Limit", 330, 150 ,Colors.indigo, Colors.red, Colors.indigo);
+                        }
+                      }
+                    ),
                   ],
                 ),
               ),
-             
             ],
           ),
         ),

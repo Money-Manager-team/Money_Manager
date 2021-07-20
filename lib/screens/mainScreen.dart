@@ -1,8 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:money_manager/constants.dart';
-import 'package:money_manager/screens/guest_user_dash.dart';
-import 'package:money_manager/screens/premiumUserLogin.dart';
-import 'package:money_manager/screens/premiumUserRegistration.dart';
 
 class MainScreen extends StatefulWidget {
   static const String idScreen = "mainScreen";
@@ -101,6 +101,13 @@ class _MainScreenState extends State<MainScreen> {
                           borderRadius: new BorderRadius.circular(23.0),
                         ),
                         onPressed: () async {
+                          await Firebase.initializeApp();
+                          await FirebaseAuth.instance.signInAnonymously();
+                          await FirebaseFirestore.instance.collection("USERs").doc(FirebaseAuth.instance.currentUser.uid).set
+                          ({
+                            "Expenditure": 0,
+                            "Budget": 0,
+                          });
                           Navigator.pushNamed(
                             context,
                             guestDashRoute,

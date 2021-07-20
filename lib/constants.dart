@@ -1,3 +1,4 @@
+const String splashScreen1 = '/splashScreen';
 const String homeRoute = '/';
 const String premiumLoginRoute = '/premiumLogin';
 const String premiumRegistrationRoute = '/premiumRegistration';

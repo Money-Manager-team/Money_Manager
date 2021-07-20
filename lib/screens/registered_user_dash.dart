@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:money_manager/Widgets/registered_menu_widget.dart';
 
@@ -7,6 +9,11 @@ class RegisteredUserDash extends StatefulWidget {
 }
 
 class _RegisteredUserDashState extends State<RegisteredUserDash> {
+
+  //Ints
+  int budget = 0;
+  int expenditure = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,8 +31,6 @@ class _RegisteredUserDashState extends State<RegisteredUserDash> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-             
-             
               Container(
                 padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 25.0),
                 alignment: Alignment.topCenter,
@@ -46,8 +51,38 @@ class _RegisteredUserDashState extends State<RegisteredUserDash> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    buildCardDashboard("300 RM" , "Budget Limit", 330, 150 ,Colors.indigo, Colors.red, Colors.indigo),
-                    buildCardDashboard("80 RM", "Current Total Expense", 330, 150 ,Colors.indigo,   Colors.indigo, Colors.red[400]),
+                    StreamBuilder(
+                      stream: FirebaseFirestore.instance.collection("USERs").doc(FirebaseAuth.instance.currentUser.uid).snapshots(),
+                      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if(!snapshot.hasData)
+                        {
+                          return CircularProgressIndicator();
+                        }
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting:
+                          return CircularProgressIndicator();
+                            break;
+                          default:
+                          return buildCardDashboard("${snapshot.data["Expenditure"]} RM" , "Current Total Expense", 330, 150 ,Colors.indigo, Colors.red, Colors.indigo);
+                        }
+                      }
+                    ),
+                    StreamBuilder(
+                      stream: FirebaseFirestore.instance.collection("USERs").doc(FirebaseAuth.instance.currentUser.uid).snapshots(),
+                      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if(!snapshot.hasData)
+                        {
+                          return CircularProgressIndicator();
+                        }
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting:
+                          return CircularProgressIndicator();
+                            break;
+                          default:
+                          return buildCardDashboard("${snapshot.data["Budget"]} RM" , "Budget Limit", 330, 150 ,Colors.indigo, Colors.red, Colors.indigo);
+                        }
+                      }
+                    ),
                   ],
                 ),
               ),

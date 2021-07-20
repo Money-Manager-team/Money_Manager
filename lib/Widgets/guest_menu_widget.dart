@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:money_manager/screens/Add_Expense.dart';
+import 'package:money_manager/screens/budget.dart';
+import 'package:money_manager/screens/view_expense.dart';
 import '../constants.dart';
 
 class GuestMenu extends StatelessWidget {
@@ -59,7 +62,7 @@ class GuestMenu extends StatelessWidget {
                   ),
                   child: Text('Register'),                  
                   onPressed: () async {
-                          Navigator.pushNamed(
+                          Navigator.pushReplacementNamed(
                             context,
                             premiumRegistrationRoute,
                           );
@@ -79,22 +82,13 @@ class GuestMenu extends StatelessWidget {
         title: Text(text),
         onTap: () async{
           if (num == 1) {
-            Navigator.pushNamed(
-              context,
-              addExpenseRoute             
-            );
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> AddExpense()));
           }
           if (num == 2) {
-            Navigator.pushNamed(
-              context,
-              viewExpenseRoute              
-            );
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> ViewExpense()));
           }
           if (num == 3) {
-            Navigator.pushNamed(
-              context,
-              viewBudgetLimitRoute              
-            );
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> BudgetPage()));
           }
           
         });
